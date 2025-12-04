@@ -81,13 +81,18 @@ function App() {
     }
   }
 
-  const handleTaskCompleted = (id, category) => {
-    setTasksByCategory((prev) => ({
-      ...prev,
-      [category]: prev[category].filter((t) => t.id !== id),
-    }))
-    loadAnalytics()
-  }
+const handleTaskCompleted = (id, category) => {
+  // Remove task from current list
+  setTasksByCategory((prev) => ({
+    ...prev,
+    [category]: prev[category].filter((t) => t.id !== id),
+  }));
+
+  // Force analytics refresh after the item is removed
+  setTimeout(() => {
+    loadAnalytics();
+  }, 100);
+};
 
   const totalTasks =
     analytics.do + analytics.schedule + analytics.delegate + analytics.eliminate

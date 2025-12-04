@@ -81,12 +81,20 @@ header h1 {
 }
 
 .task-card {
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  --hover-glow: rgba(255, 255, 255, 0.3);
   background: rgba(9, 10, 15, 0.96);
   border-radius: 18px;
   padding: 14px 16px 18px;
   position: relative;
+  overflow: visible;
   box-shadow: 0 0 26px rgba(0, 0, 0, 0.95);
   border: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+.task-card:hover {
+  transform: scale(1.03);
+  box-shadow: 0 0 25px var(--hover-color);
 }
 
 .task-title {
@@ -102,12 +110,14 @@ header h1 {
 
 .task-form {
   display: flex;
+  align-items: center;
   gap: 8px;
-  margin-bottom: 10px;
+  margin-bottom: 100%;
 }
 
 .task-form input[type='text'] {
   flex: 1;
+  min-width: 0;
   padding: 8px 12px;
   border-radius: 999px;
   border: 1px solid rgba(255, 255, 255, 0.2);
@@ -117,11 +127,9 @@ header h1 {
   font-size: 0.9rem;
 }
 
-.task-form input::placeholder {
-  color: #777b88;
-}
-
 .task-form button {
+  white-space: nowrap;
+  flex-shrink: 0;
   padding: 8px 14px;
   border-radius: 999px;
   border: none;
@@ -141,10 +149,11 @@ header h1 {
 
 .task-list {
   margin-top: 6px;
-  max-height: 200px;
-  overflow-y: auto;
+  /*max-height: 200px;*/
+  /*overflow-y: auto;*/
   padding-right: 6px;
   font-size: 0.88rem;
+  position: relative;
 }
 
 .empty-msg {
@@ -160,7 +169,8 @@ header h1 {
   background: rgba(26, 28, 36, 0.95);
   margin-bottom: 6px;
   border-left: 3px solid rgba(255, 255, 255, 0.12);
-  overflow: hidden;
+  overflow: visible;
+  z-index: 1;
 }
 
 .task-item-inner {
@@ -181,11 +191,15 @@ header h1 {
 
 .godzilla-wrapper {
   position: absolute;
-  left: -80px;
-  top: -10px;
-  display: flex;
-  align-items: center;
-  gap: 4px;
+  bottom: 100%;    /* sits on top edge of the task row */
+  left: 0;         /* or tweak to 10px / 20px to align with checkbox */
+  z-index: 10;     /* above other tasks + card */
+  pointer-events: none; /* so clicks still hit the checkbox underneath */
+}
+
+
+.godzilla-img {
+  display: block;
 }
 
 .task-list::-webkit-scrollbar {
