@@ -534,3 +534,89 @@ header h1 {
   }
 }
 
+
+/* ======================= GHOST PLACEHOLDER ======================= */
+
+.ghost-donut-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 24px 0;
+}
+
+.ghost-donut {
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  border: 10px solid rgba(255,255,255,0.1);
+  border-top-color: rgba(255,255,255,0.25);
+  border-bottom-color: rgba(255,255,255,0.25);
+
+  animation: ghostRotate 3s linear infinite;
+  filter: drop-shadow(0 0 12px rgba(255,255,255,0.15));
+}
+
+@keyframes ghostRotate {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+.ghost-msg {
+  margin-top: 12px;
+  font-size: 0.9rem;
+  opacity: 0.65;
+  color: #ddd;
+}
+
+
+/* =========================================================
+   SMOOTH FADE TRANSITIONS FOR ANALYTICS SECTION
+   ========================================================= */
+
+.fade-in {
+  animation: fadeInSoft 0.6s ease forwards;
+}
+
+@keyframes fadeInSoft {
+  0% {
+    opacity: 0;
+    transform: translateY(10px) scale(0.97);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.chart-fade {
+  opacity: 0;
+  transform: translateY(10px) scale(0.97);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.chart-fade.fade-in {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+/* Optional: ghost donut fade */
+.ghost-donut-wrapper.fade-in {
+  opacity: 0;
+  animation: fadeGhostOut 0.4s ease forwards;
+}
+
+@keyframes fadeGhostOut {
+  0% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+.fade-in {
+  animation: fadeIn 0.6s forwards ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.9); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+

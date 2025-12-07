@@ -51,14 +51,30 @@ function App() {
     }
   }
 
-  const loadAnalytics = async () => {
-    try {
-      const res = await api.get('analytics/')
-      setAnalytics(res.data)
-    } catch (e) {
-      console.error(e)
-    }
+const [fadeInChart, setFadeInChart] = useState(false);
+
+
+
+
+const loadAnalytics = async () => {
+  try {
+    const res = await api.get('analytics/');
+    const data = res.data;
+
+    const totalNow = data.do + data.schedule + data.delegate + data.eliminate;
+
+    // detect transition from 0 → 1
+    setJustStarted((prev) => (prev === false && totalNow === 1 ? true : prev));
+    if (totalNow === 1 && analytics.do + analytics.schedule + analytics.delegate + analytics.eliminate === 0) {
+    // fade chart in softly
+    setFadeInChart(true);
   }
+    setAnalytics(data);
+  } catch (e) {
+    console.error(e);
+  }
+}
+
 
   useEffect(() => {
     loadTasks()
@@ -122,6 +138,9 @@ function App() {
     ],
   }
 
+
+  const [justStarted, setJustStarted] = useState(false);
+
   // 🍩 DOUGHNUT CHART OPTIONS
   const chartOptions = {
     responsive: true,
@@ -153,16 +172,26 @@ function App() {
         </header>
 
         <section className="analytics-card">
-          <div className="donut-wrapper">
-            <Doughnut data={chartData} options={chartOptions} />
-          </div>
+          {totalTasks === 0 ? (
+            // --------------------- EMPTY STATE ------------------------
+            <div className="ghost-donut-wrapper">
+              <div className="ghost-donut"></div>
+              <p className="ghost-msg">Add your first task</p>
+            </div>
+          ) : (
+            <>
+              {/* ------------------ DOUGHNUT WITH SPIN ------------------ */}
+              <div className={`doughnut-spin-wrapper ${justStarted ? "spin-once" : ""}`}>
+                <Doughnut data={chartData} options={chartOptions} />
+              </div>
 
-          <div className="analytics-summary">
-            <p>
-              Total Tasks: <span>{totalTasks}</span>
-            </p>
-          </div>
+              <div className="analytics-summary">
+                <p>Total Tasks: <span>{totalTasks}</span></p>
+              </div>
+            </>
+          )}
         </section>
+        
 
 
         <section className="grid-2x2">
