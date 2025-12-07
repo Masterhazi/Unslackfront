@@ -1,18 +1,16 @@
-
 import { useEffect, useState } from 'react'
-import { Bar } from 'react-chartjs-2'
+import { Doughnut } from 'react-chartjs-2'
 import {
   Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  BarElement,
+  ArcElement,
   Tooltip,
   Legend,
 } from 'chart.js'
 import api from './api'
 import TaskColumn from './components/TaskColumn'
 
-ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend)
+// Register doughnut chart components
+ChartJS.register(ArcElement, Tooltip, Legend)
 
 const COLORS = {
   do: 'rgba(255, 71, 71, 0.9)',
@@ -81,27 +79,30 @@ function App() {
     }
   }
 
-const handleTaskCompleted = (id, category) => {
-  // Remove task from current list
-  setTasksByCategory((prev) => ({
-    ...prev,
-    [category]: prev[category].filter((t) => t.id !== id),
-  }));
+  const handleTaskCompleted = async (id, category) => {
+    try {
+      await api.delete(`tasks/${id}/`)
 
-  // Force analytics refresh after the item is removed
-  setTimeout(() => {
-    loadAnalytics();
-  }, 100);
-};
+      setTasksByCategory((prev) => ({
+        ...prev,
+        [category]: prev[category].filter((t) => t.id !== id),
+      }))
+
+      loadAnalytics()
+    } catch (e) {
+      console.error(e)
+    }
+  }
 
   const totalTasks =
     analytics.do + analytics.schedule + analytics.delegate + analytics.eliminate
 
+  // 🍩 DOUGHNUT CHART DATA
   const chartData = {
     labels: ['Do', 'Schedule', 'Delegate', 'Eliminate'],
     datasets: [
       {
-        label: 'Tasks per category',
+        label: 'Tasks',
         data: [
           analytics.do,
           analytics.schedule,
@@ -114,21 +115,26 @@ const handleTaskCompleted = (id, category) => {
           COLORS.delegate,
           COLORS.eliminate,
         ],
+        borderColor: '#ffffff22',
+        borderWidth: 2,
+        hoverOffset: 12,
       },
     ],
   }
 
+  // 🍩 DOUGHNUT CHART OPTIONS
   const chartOptions = {
     responsive: true,
-    scales: {
-      y: {
-        beginAtZero: true,
-        ticks: { precision: 0 },
+    plugins: {
+      legend: {
+        position: 'bottom',
+        labels: {
+          color: '#ffffff',
+          font: { size: 14 },
+        },
       },
     },
-    plugins: {
-      legend: { display: false },
-    },
+    cutout: '55%', // doughnut thickness
   }
 
   return (
@@ -147,13 +153,17 @@ const handleTaskCompleted = (id, category) => {
         </header>
 
         <section className="analytics-card">
-          <Bar data={chartData} options={chartOptions} />
+          <div className="donut-wrapper">
+            <Doughnut data={chartData} options={chartOptions} />
+          </div>
+
           <div className="analytics-summary">
             <p>
               Total Tasks: <span>{totalTasks}</span>
             </p>
           </div>
         </section>
+
 
         <section className="grid-2x2">
           <TaskColumn
