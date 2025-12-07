@@ -527,4 +527,10 @@ header h1 {
   gap: 18px;
 }
 
+/* Mobile (stack into 1 column) */
+@media (max-width: 600px) {
+  .grid-2x2 {
+    grid-template-columns: 1fr;
+  }
+}
 
