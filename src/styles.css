@@ -70,7 +70,6 @@ body::before {
   max-width: 1200px;
   margin: 30px auto 60px;
   padding: 0 16px;
-  backdrop-filter: blur(4px);
 }
 
 header h1 {
@@ -79,15 +78,21 @@ header h1 {
 }
 
 .analytics-card {
-  background: radial-gradient(circle at top left, #1b1e25, #07090d 60%);
-  border-radius: 18px;
-  padding: 18px 18px 24px;
-  box-shadow: 0 0 30px rgba(0, 0, 0, 0.9);
-  border: 1px solid rgba(255, 255, 255, 0.04);
-  max-width: 500px;
+  background: rgba(9, 10, 15, 0.65); /* frosted panel */
+  border-radius: 22px;
+
+  max-width: 430px;
   margin: 0 auto 28px;
-  text-align: center;
+  padding: 22px;
+
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+
+  box-shadow: 0 8px 28px rgba(0,0,0,0.85);
+  border: 1px solid rgba(255, 255, 255, 0.05);
 }
+
+
 
 .analytics-summary {
   margin-top: 12px;
