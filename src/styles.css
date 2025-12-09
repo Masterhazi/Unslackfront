@@ -77,19 +77,38 @@ header h1 {
   margin-bottom: 12px;
 }
 
+@keyframes glowPulse {
+  0% {
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.25);
+  }
+  50% {
+    box-shadow: 0 0 28px rgba(255, 255, 255, 0.55);
+  }
+  100% {
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.25);
+  }
+}
+
+
 .analytics-card {
-  background: rgba(9, 10, 15, 0.65); /* frosted panel */
+  background: rgba(14, 16, 22, 0.45); /* frosted panel */
   border-radius: 22px;
 
   max-width: 430px;
   margin: 0 auto 28px;
   padding: 22px;
 
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
 
-  box-shadow: 0 8px 28px rgba(0,0,0,0.85);
+  box-shadow:
+  0 0 20px rgba(255,255,255,0.2),   /* faint ambience */
+  0 0 40px rgba(0,0,0,0.7); 
   border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.analytics-card {
+  animation: glowPulse 4s ease-in-out infinite;
 }
 
 
